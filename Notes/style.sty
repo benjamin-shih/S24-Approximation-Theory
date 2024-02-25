@@ -1,0 +1,107 @@
+%==============STYLE DIMULAI==============%
+\usepackage[verbose=true,letterpaper]{geometry}
+\usepackage[square, numbers, comma, sort, compress]{natbib}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage{amsmath, mathtools, amsthm, amsfonts}
+\usepackage{graphicx}
+\usepackage{floatrow}
+\usepackage{titlesec}
+\makeatletter
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt}
+\begin{flushleft}
+  {\Huge\sffamily\bfseries\@title}
+  \vskip 1.5em
+  {\sffamily\@author} \\
+  {\@date}
+\end{flushleft}\egroup
+}
+\makeatother
+\usepackage{fancyhdr, extramarks}
+\renewenvironment{abstract}
+	{\par{\bfseries \noindent \sffamily \abstractname.}}
+	{\vskip 0.1em \medskip\noindent \rule{\linewidth}{.5pt}}
+\usepackage{lmodern}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage{sectsty}
+\sectionfont{\sffamily\fontsize{15}{15}\selectfont}
+\subsectionfont{\sffamily\fontsize{10}{5}\selectfont}
+\usepackage[colorlinks = true,
+	linkcolor = black,
+	urlcolor  = blue,
+	citecolor = black,
+	anchorcolor = blue]{hyperref}
+\usepackage[dvipsnames, table]{xcolor}
+\usepackage[most]{tcolorbox}
+
+% ------------ Theorems --------------
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem{expl}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+\newtcolorbox{cbox}[1][]{
+	breakable,
+	boxrule=0pt,
+	frame hidden,
+	sharp corners,
+	enhanced,
+    before upper={\parindent4ex},
+	borderline west={2pt}{0pt}{#1},
+    colback=#1!5!white
+}
+
+% ---------- THEOREM ENVIRONMENTS --------
+\newenvironment{dfn}[1][]
+{\begin{cbox}[Thistle]
+		\begin{defn}[#1]
+			}
+			{
+		\end{defn}
+	\end{cbox}
+}
+
+\newenvironment{theorem}[1][]
+{\begin{cbox}[Periwinkle]
+		\begin{thm}[#1]
+			}
+			{
+		\end{thm}
+	\end{cbox}
+}
+
+\newenvironment{example}[1][]
+{\begin{cbox}[CadetBlue]
+		\begin{expl}[#1]
+			}
+			{
+		\end{expl}
+	\end{cbox}
+}
+
+\newenvironment{remark}[1][]
+{\begin{cbox}[Thistle]
+        \color{Thistle}
+        \begin{rmk}[#1]
+            \color{black}
+            }
+            {
+        \end{rmk}
+    \end{cbox}
+}
+
+
+\let\Sectionmark\sectionmark
+\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
+\let\Subsectionmark\subsectionmark
+\def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\sffamily\small\thepage}
+\fancyhead[L]{\sffamily\small\Subsectionname}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% -------- MATH ------------
+\newcommand{\R}{\mathbb{R}}
