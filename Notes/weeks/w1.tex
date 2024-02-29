@@ -1,8 +1,8 @@
 \section{Week 1: 2/22/2024}\sectionmark{Week 1}
-Chebyshev interpolants have a very strong approximation properties, as opposed to uniformly spaced points. They are the points that correspond to the real part of equispaced points on the unit circle in the complex plane. That is, the Chebyshev points are 
+Chebyshev interpolants have a very strong approximation properties, as opposed to uniformly spaced points. They are the points that correspond to the real part of equispaced points on the unit circle in the complex plane. That is, the Chebyshev points are
 \[ x_j = \cos\left(\frac{j\pi}{n}\right) \]
 and a key property is that they ``collect'' near the ends of the interval in higher density. Namely, this key property is that each point is, on average, the same distance away from every other point.
-For the most part, we deal with approximating functions on the interval $[-1, 1]$, which any function on any interval $[a, b]$ can be scaled to. 
+For the most part, we deal with approximating functions on the interval $[-1, 1]$, which any function on any interval $[a, b]$ can be scaled to.
 
 There are connections that can be drawn between the Chebyshev, Fourier, and Laurent settings, with each being used in numerical, complex, and real analysis heavily, respectively. In the Chebyshev settings, we approximate functions $f(x), x \in [-1, 1]$ with the form
 \[ f(x) \approx \sum_{k=0}^n a_kT_k(x) \]
@@ -12,22 +12,42 @@ and finally using the angle $\theta \in [-\pi, \pi]$ to define $\mathcal{F}(\the
 \[ \mathcal{F}(\theta) \approx \frac{1}{2}\sum_{k=0}^n a_k(e^{ik\theta} + e ^{-ik\theta}) \]
 Their corresponding canonical grid systems are as follow:
 \begin{center}
-    \begin{tabular}{cc}
-        Chebyshev points & $x_j = \cos\left(\frac{j\pi}{n}\right), \quad 0 \leq j \leq n$ \\
-        Roots of unity (Laurent) & $z_j = e^{\frac{j\pi}{n}}, \quad -n+1\leq j \leq n$ \\
-        Equispaced points (Fourier) & $\theta_j = \frac{j\pi}{n}, \quad -n+1 \leq j \leq n$
-    \end{tabular}
+	\begin{tabular}{cc}
+		Chebyshev points            & $x_j = \cos\left(\frac{j\pi}{n}\right), \quad 0 \leq j \leq n$ \\
+		Roots of unity (Laurent)    & $z_j = e^{\frac{j\pi}{n}}, \quad -n+1\leq j \leq n$            \\
+		Equispaced points (Fourier) & $\theta_j = \frac{j\pi}{n}, \quad -n+1 \leq j \leq n$
+	\end{tabular}
 \end{center}
 
 \subsection{Chebyshev Series and Polynomials}
 \begin{dfn}[$k$-th Chebyshev polynomial]
-    The $k$-th Chebyshev polynomial is the real part of the function $z^k$ on the unit circle; i.e.
-    \[ T_k(x) = \Re (z^k) = \frac{1}{2}(z^k + z^{-k}) = \cos(k\theta) \]
+	The $k$-th Chebyshev polynomial is the real part of the function $z^k$ on the unit circle; i.e.
+	\[ T_k(x) = \Re (z^k) = \frac{1}{2}(z^k + z^{-k}) = \cos(k\theta) \]
 \end{dfn}
 
 \begin{theorem}[Existence of Chebyshev Series] Suppose that $f$ is Lipschitz on $[-1,1]$, i.e. that there exists $C \in \R$ such that $|f(x) - f(y)| \leq C|x - y|$ for any $x, y \in \R$. Then $f$ admits a unique representation as a Chebyshev series
-\[ f(x) = \sum_{k=0}^\infty a_k T_k(x) \]
-which is absolutely and uniformly convergent. The coefficients $a_k$ are given by
-\[ a_k = \frac{2}{\pi} \int_{-1}^1 \frac{f(x)T_k(x)}{\sqrt{1-x^2}} dx \]
-for $k \geq 1$, and for $k=0$ by the same formula with a $\frac{1}{\pi}$ factor instead.
+	\[ f(x) = \sum_{k=0}^\infty a_k T_k(x) \]
+	which is absolutely and uniformly convergent. The coefficients $a_k$ are given by
+	\[ a_k = \frac{2}{\pi} \int_{-1}^1 \frac{f(x)T_k(x)}{\sqrt{1-x^2}} dx \]
+	for $k \geq 1$, and for $k=0$ by the same formula with a $\frac{1}{\pi}$ factor instead.
 \end{theorem}
+
+\subsection{Introduction to Linear Approximation with Neural Networks}
+Generally, we will work with compact and convex domains $X \subset \R^d$ and target functions $f: X \rightarrow \R$ from some function space $\mathcal{F}(X)$. We denote by $f_\theta: \R^d \rightarrow \R$ a neural network with $n_\theta$ parameters. The study of the subject of neural network approximation is mainly concerned with the following three problems:
+\begin{enumerate}
+	\item \textbf{Density}: When $n_\theta \rightarrow \infty$, does there exist $f_\theta$ that approximates $f$ well?
+	\item \textbf{Covergence}: If $n_\theta < \infty$ is fixed, how close can $f_\theta$ be to $f$?
+	\item \textbf{Complexity}: If we want $\| f_\theta - f \| < \epsilon$, how large is $n_\theta$?
+\end{enumerate}
+Before discussing neural networks directly, we motivate with some background of density in polynomial approximation.
+\begin{dfn}[Uniform Convergence]
+	A sequence of functions $\{f_n\}_{n=1}^\infty$ is said to converge uniformly to a limiting function $f$ on a set $X$ if for all $\epsilon > 0$, there exist $N \in \mathbb{N}$ such that $|f(x) - f_m(x)| <\epsilon$ for all $m \geq N$ and all $x \in X$ and denote this by \[f_m \rightarrow f \quad \text{uniformly} \]
+\end{dfn}
+We can also equivalently define uniform convergence in terms of the supremum or infinity norm, where
+\[ \| f\|_\infty = \sup_{x \in X}|f(x)| \]
+by the condition $\| f - f_m \|_\infty \rightarrow 0$.
+Weierstrass gave the following result, which says that any continuous function $f$ on a closed subinterval of the real line can be approximated arbitrarily well by an algebraic polynomial.
+\begin{theorem}[Weierstrass]
+  Given a function $f \in C([a, b])$ and $\epsilon > 0$, there exists an algebraic polynomial $p$ such that $|f(x) - p(x)| <\epsilon$ for all $x \in [a, b]$, or equivalently, $\| f - p \|_\infty < \epsilon$. 
+\end{theorem}
+It should be noted that a similar result exists for $2\pi$-periodic continuous functions and trignometric polynomials; i.e., that trigonometric polynomials are dense in the class of $2\pi$-periodic continuous functions.
