@@ -1,2 +1,72 @@
 \section{Week 2: 2/29/2024}\sectionmark{Week 2}
 \subsection{Interpolants and projections}
+Take $f(x)$ to be Lipschitz continuous on $[-1, 1]$ with Chebyshev coefficients $\{a_k\}$ so that
+\[ f(x) = \displaystyle\sum_{k=0}^{\infty} a_kT_k(x) \]
+Then we can approximate $f$ in the space of $n$-degree polynomials by \emph{interpolation}; that is, as
+\[ p_n(x) = \displaystyle\sum_{k=0}^{n} c_kT_k(x) \]
+Another approximation of $f$ is the \emph{truncation} or \emph{projection} to degree $n$, where the coefficientes through degree $n$ match those of $f$:
+\begin{displaymath}
+	f_n(x) = \displaystyle\sum_{k=0}^{n} a_kT_k(x)
+\end{displaymath}
+
+\begin{theorem}[Aliasing of Chebyshev polynomials]
+	For any $n \geq 1$ and $0 \leq m \leq n$, the following Chebyshev polynomials take the same values on the $(n+1)$-point Chebyshev grid:
+	\begin{displaymath}
+		T_m, T_{2n-m}, T_{2n+m}, T_{4n-m}, T_{4n+m}, T_{6n-m}, \ldots
+	\end{displaymath}
+	Equivalently, for any $k \geq 0$, $T_k$ takes the same value on the grid as $T_m$ with
+	\begin{displaymath}
+		m = |(k+n-1)\pmod{2n} - (n-1)
+	\end{displaymath}
+	which is a number in the range $0 \leq m \leq n$.
+\end{theorem}
+
+This leads to the connection between the coefficients of the polynomial approximant $\{a_k\}$ and the Chebyshev coefficients $\{c_k\}$.
+\begin{theorem}[Aliasing formula for Chebyshev coefficients]
+	Let $f$ be Lipschitz continuous on $[-1, 1]$, and $p_n$ be its Chebyshev interpolant in $\mathcal{P}_n$. Let $\{a_k\}$ and $\{c_k\}$ be the Chebyshev coefficients of $f$ and $p_n$. Then
+	\begin{align*}
+		c_0 & = a_0 + a_{2n} + a_{4n} + \cdots \\
+		c_n & = a_n + a_{3n} + a_{5n} + \cdots
+	\end{align*}
+	and for $1 \leq k \leq n - 1$,
+  \begin{displaymath}
+    c_k = a_k + (a_{k+2n} + a_{k+4n} + \cdots) + (a_{-k+2n} + a_{-k+4n}+\cdots)
+  \end{displaymath}
+\end{theorem}
+Essentially, this says that any $f$ is indistinguishable from a polynomial interpolant of degree $n$ on the $(n+1)$ point grid obtained by reassigning all Chebyshev coefficients $\{a_k\}$ to their aliases up to degree $n$. The errors between the two different approximations are 
+\begin{align*}
+  f(x) - f_n(x) &= \displaystyle\sum_{k=n+1}^{\infty} a_kT_k(x) \\
+  f(x) - p_n(x) &= \displaystyle\sum_{k=n+1}^{\infty}a_k(T_k(x) - T_m(x))
+\end{align*}
+where $m = |(k+n-1)\pmod{2n} - (n-1)|$ which are absolutely convergent. We note that $f_n$ often leads to a approximation on the basis of relative error to $f$ compared to $p_n$.
+
+\subsection{Barycentric Interpolation Formula}
+We're now interested in evaluating Chebyshev interpolants; multiple approaches exist and range from $O(n\log n)$ to $O(n)$ work. We focus on the latter, called the \emph{barycentric interpolation formula}, which is direct and numerically stable. The formula takes the form 
+\begin{equation}
+  p(x) = \displaystyle\sum_{j=0}^{n}f_j\ell_j(x)
+  \label{eq: lagrange-form}
+\end{equation}
+which is in alternative Lagrange form and is the linear combination of unique \emph{Lagrange} or \emph{cardinal} polynomials $\ell_j \in \mathcal{P}_n$ defined as 
+\[ \ell_j(x_k) = \begin{cases}
+  1 &\text{ if } k=j\\
+  0 &\text{ if } k \not=j
+\end{cases}\]
+In fact, we have an exact expression for $\ell_j$:
+\begin{equation}
+  \ell_j(x) = \displaystyle\frac{\prod_{k \not= j}(x- x_k)}{\prod_{k\not=j} (x_j - x_k) }
+  \label{eq: lagrange-interpolant}
+\end{equation}
+However, computational complexity wise, \eqref{eq: lagrange-interpolant} is not so good, but we can remedy this. 
+\begin{dfn}[Node Polynomial]
+  The \emph{node polynomial} $\ell \in \mathcal{P}_{n+1}$ for a given grid is
+  \[ \ell(x) = \prod_{k=0}^n (x - x_k)\]
+\end{dfn}
+Using this, \eqref{eq: lagrange-interpolant} then becomes
+\[ \ell_j(x) = \frac{\ell(x)}{\ell'(x_j)(x - x_j)}\]
+Making the substitutions
+\[ \lambda_j = \frac{1}{\prod_{k\not=j} (x_j - x_k)}, \qquad \ell_j(x) = \ell(x)\frac{\lambda_j}{x-x_j}\]
+\eqref{eq: lagrange-form} becomes the ``type 1 barycentric formula'':
+\[ p(x) = \ell(x) \sum_{j=0}^n \frac{\lambda_j}{x - x_j}f_j\]
+
+\subsection{Weierstrass Approximation Theorem}
+Chapter 6 in the text goes over the Weierstrass Approximation Theorem, which we covered in the neural network survey paper as Theorem \ref{thm: weierstrass}. We note that the result has been generalized by theorem due to Runge and Mergelyan, which state that a function $f$ defined on a compact set $K \subset \mathbb{C}$ with connected complent which is continous on $K$ and analytic throughout $K$ (resp. interior of $K$), then $f$ can be approximated on $K$ by polynomials.
