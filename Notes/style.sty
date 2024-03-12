@@ -56,6 +56,26 @@
 	anchorcolor = ctpTeal]{hyperref}
 \usepackage[most]{tcolorbox}
 
+% ------------ TikZ ------------------
+\usepackage{tikz}
+\usepackage{listofitems}
+\usetikzlibrary{arrows.meta} 
+\usepackage[outline]{contour} 
+\contourlength{1.4pt}
+\tikzset{
+  >=latex, % for default LaTeX arrow head
+  node/.style={thick,circle,draw=ctpBlue,minimum size=22,inner sep=0.5,outer sep=0.6},
+  node in/.style={node,green!20!black,draw=ctpGreen!30!black,fill=ctpGreen!25},
+  node hidden/.style={node,blue!20!black,draw=ctpBlue!30!black,fill=ctpBlue!20},
+  node convol/.style={node,orange!20!black,draw=ctpPeach!30!black,fill=ctpPeach!20},
+  node out/.style={node,red!20!black,draw=ctpRed!30!black,fill=ctpRed!20},
+  connect/.style={thick,ctpLavender}, %,line cap=round
+  connect arrow/.style={-{Latex[length=4,width=3.5]},thick,ctpLavender,shorten <=0.5,shorten >=1},
+  node 1/.style={node in}, % node styles, numbered for easy mapping with \nstyle
+  node 2/.style={node hidden},
+  node 3/.style={node out}
+}
+\def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
 % ------------ Theorems --------------
 
 \theoremstyle{definition}

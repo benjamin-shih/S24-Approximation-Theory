@@ -2,3 +2,58 @@
 \subsection{Convergence for Differentiable Functions}
 
 \subsection{Density of Two Layer Neural Networks}
+We consider the family of two-layer feedforward networks consisting of:
+\begin{itemize}
+  \item $d$ input neurons 
+  \item $r$ neurons in one hidden layer using the same activation $\sigma: \R \rightarrow \R$
+  \item one output nueron with no activation nor bias.
+\end{itemize}
+\begin{figure}[bth]
+  \centering
+	\begin{tikzpicture}[x=2.2cm,y=1.4cm]
+		\readlist\Nnod{2,3,1} % array of number of nodes per layer
+		\message{^^J  Layer}
+		\foreachitem \N \in \Nnod{ % loop over layers
+			\def\lay{\Ncnt} % alias of index of current layer
+			\pgfmathsetmacro\prev{int(\Ncnt-1)} % number of previous layer
+			\message{\lay,}
+			\foreach \i [evaluate={\y=\N/2-\i; \x=\lay; \n=\nstyle;}] in {1,...,\N}{ % loop over nodes
+					% NODES
+					\node[node \n] (N\lay-\i) at (\x,\y) {};
+					% CONNECTIONS
+					\ifnum\lay>1 % connect to previous layer
+						\foreach \j in {1,...,\Nnod[\prev]}{ % loop over nodes in previous layer
+								\draw[connect,white,line width=1.2] (N\prev-\j) -- (N\lay-\i);
+								\draw[connect] (N\prev-\j) -- (N\lay-\i);
+								%\draw[connect] (N\prev-\j.0) -- (N\lay-\i.180); % connect to left
+							}
+					\fi % else: nothing to connect first layer
+				}
+		}
+		% LABELS
+		\node[above=5,align=center,ctpGreen!60!black] at (N1-1.90) {Input \\[-0.2em]layer};
+		\node[above=2,align=center,ctpBlue!60!black] at (N2-1.90) {Hidden layer};
+		\node[above=10,align=center,ctpRed!60!black] at (N\Nnodlen-1.90) {Output\\[-0.2em]layer};
+	\end{tikzpicture}
+  \caption{A feed-forward neural network with one hidden layer, where $d=2, r=3$.}
+\end{figure}
+
+If we let $x \in \R^d$ be the input to the network, then the ourput $y \in \R$ can be written
+\begin{displaymath}
+  y = \sum_{i=1}^r W_{1, i}^2 \sigma\left( \displaystyle\sum_{j=1}^{d}W_{i, j}^1 x_j + b_i\right)
+\end{displaymath}
+where $W^1 \in \R^{r \times d}$ and $W^2 \in \R^{1 \times r}$ are the weight matrices for the layer and $b \in \R^r$ is the bias in the hidden layer. Then the main desnity result for such networks is as follows. 
+\begin{theorem}[Pinkus]
+  Let
+  \begin{displaymath}
+    \mathcal{M}(\sigma) = \operatorname{span}\{ \sigma(w\cdot x + b): w \in \R^d, b \in \R\}
+  \end{displaymath}
+  where $\sigma \in C(\R)$. Then $\mathcal{M}(\sigma)$ is dense in $C(\R^n)$ with respect to the supremum norm on compact sets, if and only if $\sigma$ is not a polynomial.
+\end{theorem}
+Essentially, Pinkus' theorem states that the network space $\mathcal{M}(\sigma)$ is dense in the space of continuous functions with respect to the supremum norm as long as the class of activation function chosen is non-polynomial. This means that given a target function $f \in C(\R^d)$ and a compact subset $X \subset \R^d$, for any $\epsilon > 0$, there exists $g \in \mathcal{M}(\sigma)$ so that 
+\[ \sup_{x \in X} | f(x) - g(x) | < \epsilon \]
+Examples of such $\sigma$ which would satisfy the necessary conditions of Pinkus' theorem would be $\sin(\cdot), \cos(\cdot)$, etc. Let us consider the proof of the $1$-dimensional case of the theorem; the extension to multiple dimensions can be found in \cite{surv}.
+
+\paragraph{Proof of the $1$-dimensional case of Pinkus' theorem} In this proof we consider the $1$-dimensional case of $\mathcal{M}(\sigma)$, which we will denote
+\[ \mathcal{N}(\sigma) = \operatorname{span}(wx+b): w, b \in \R \]
+For $\mathcal{N}(\sigma)$, we will show that for any non-polynomial $\sigma$, $\mathcal{N}(\sigma)$ is dense in $C(\R)$.
