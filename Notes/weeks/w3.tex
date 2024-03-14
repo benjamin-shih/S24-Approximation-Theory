@@ -1,5 +1,37 @@
 \section{Week 3: 3/7/2024}
 \subsection{Convergence for Differentiable Functions}
+Generally, we accept the following to be a motif in approximation:
+\begin{quote}
+  The smoother a function, the faster its approximants converge as $n \rightarrow \infty$. 
+\end{quote}
+Generally, if a function $f \in C^k([-1, 1])$, then convergence of its Chebyshev interpolants occurs on the rate of $O(n^{-k})$ with respect to the supremum norm. Note that if $f$ is not \emph{continuosuly} differentiable, then may not be true. However, if $f$ has \emph{bounded variation} ($f$ has bounded variation if its total variation---the $1$-norm of the derivative---is finite), then it enjoys this convergence. 
+\begin{dfn}[Absolute continuity (heuristic)]
+    A function $f$ is absolutely continuous if it is equal to the integral of its derivative, which exists almost everywhere and is Lebesgue integrable. 
+\end{dfn}
+With this definition, we can establish a bound on the Chebyshev coefficients for differentiable functions.
+\begin{theorem}[Chebyshev coefficients for differentiable functions]
+  For an integer $\nu \geq 0$, let $f$ and its derivatives thorugh $f^{\nu - 1)}$ be absolutely continuous on $[-1, 1]$ and suppose the $\nu$-th derivative $f^\nu$ is of bounded variation $V$. Then for $k \geq \nu + 1$, the Chebyshev coefficients of $f$ satisfy
+  \[ |a_k| \leq \frac{2V}{\pi k(k -1)\cdot(k - \nu)} \leq \frac{2V}{\pi(k-\nu)^{\nu + 1}}\]
+  \label{thm: cheby-coeff}
+\end{theorem}
+With this bound on the coefficients, we establish the following convergence result:
+\begin{theorem}[Convergence for differentiable functions]
+  If $f$ satisfies the conditions of Theorem \ref{thm: cheby-coeff}, then with $V$ denoting the total variation of $f^{(\nu)}$ for some $\nu \geq 1$, then for any $n > \nu$, its Chebyshev projections satisfy
+  \[ \|f - f_n\| \leq \frac{2V}{\pi \nu (n-\nu)^\nu} \]
+  and its Chebyshev interpolants satisfy
+  \[ \| f - p_n\| \leq \frac{4V}{\pi\nu(n-\nu)^\nu}\]
+\end{theorem}
+
+\subsection{Gibbs Phenomenon}
+We now study the \emph{Gibbs Phenomenon}, which describes how polynomial interpolants and projections oscillate and overshoot near discontinuities. Note that as $n \rightarrow \infty$, the overshoot gets narrower, but not shorter!
+\begin{theorem}[Gibbs Phenomenon for Chebyshev interpolants]
+  Let $p_n$ be the degree $n$ Chebyshev interpolant of the function $f(x) = \operatorname{sign}(x)$ on $[-1, 1]$. Then as $n \rightarrow \infty$,
+  \begin{align*}
+    \lim_{n \rightarrow \infty, n \text{ odd}} \|p_n \| &= c_1 \approx 1.282 \\ 
+    \lim_{n \rightarrow \infty, n \text{ even}} \|p_n \| &= c_2 \approx 1.066
+  \end{align*}
+  These values are the height or maximum attained by the Chebyshev interpolant on $f(x)$.
+\end{theorem}
 
 \subsection{Density of Two Layer Neural Networks}
 We consider the family of two-layer feedforward networks consisting of:

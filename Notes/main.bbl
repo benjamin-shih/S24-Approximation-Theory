@@ -1,0 +1,21 @@
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Trefethen(2012)]{atap}
+Lloyd~N. Trefethen.
+\newblock \emph{Approximation Theory and Approximation Practice (Other Titles
+  in Applied Mathematics)}.
+\newblock Society for Industrial and Applied Mathematics, USA, 2012.
+\newblock ISBN 1611972396.
+
+\bibitem[Motamed(2022)]{surv}
+Mohammad Motamed.
+\newblock Approximation power of deep neural networks: an explanatory
+  mathematical survey.
+\newblock preprint at \url{https://arxiv.org/pdf/2207.09511.pdf}, 2022.
+
+\end{thebibliography}
