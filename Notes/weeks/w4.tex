@@ -1,2 +1,14 @@
 \section{Week 4: 3/14/2024}
-Skipped: End of Chapter 4, Chapter 8 (analytic functions)
+
+\subsection{Best Approximation}
+
+\begin{dfn}[Best Approximant]
+  The \emph{best approximant} of a function $f$ is a polynomial $p^*$ with a specified degree $n$ such that $p^*$ minimizes the $\infty$-norm on some interval with $f$. 
+\end{dfn}
+This $p^*$ is unique; however, Chebyshev interpolants are often as good or even better (that is, best approximation under the $\infty$-norm may not be as useful as it sounds). Best approximations hold a property called the \emph{equioscillation} property; that is, the error curve of the best approximant attains extreme magnitudes with alernating signs at a succession of values of $x$. 
+
+\begin{theorem}[Equioscillation characterization of best approximants]
+    For $f \in C([-1, 1])$, there is a unique best approximation $p^* \in \mathcal{P}_n$. If $f: [-1, 1] \rightarrow \R$, then $p^*$ is real as well, and a polynomial $p \in \mathcal{P}_n$ is equal to $p^*$ if and only if $f- p$ equioscillates in at least $n+2$ extreme points.
+\end{theorem}
+
+

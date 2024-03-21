@@ -80,6 +80,7 @@ node 3/.style={node out}
 
 \theoremstyle{definition}
 \newtheorem{thm}{Theorem}[section]
+\newtheorem{lma}[thm]{Lemma}
 \newtheorem{rmk}[thm]{Remark}
 \newtheorem{expl}[thm]{Example}
 \newtheorem{defn}[thm]{Definition}
@@ -110,6 +111,15 @@ node 3/.style={node out}
 			}
 			{
 		\end{thm}
+	\end{cbox}
+}
+
+\newenvironment{lemma}[1][]
+{\begin{cbox}[ctpLavender]
+		\begin{lma}[#1]
+			}
+			{
+		\end{lma}
 	\end{cbox}
 }
 

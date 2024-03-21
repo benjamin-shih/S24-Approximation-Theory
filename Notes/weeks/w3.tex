@@ -88,4 +88,15 @@ Examples of such $\sigma$ which would satisfy the necessary conditions of Pinkus
 
 \paragraph{Proof of the $1$-dimensional case of Pinkus' theorem} In this proof we consider the $1$-dimensional case of $\mathcal{M}(\sigma)$, which we will denote
 \[ \mathcal{N}(\sigma) = \operatorname{span}\{(wx+b): w, b \in \R\} \]
-We will show that for any non-polynomial $\sigma$, $\mathcal{N}(\sigma)$ is dense in $C(\R)$.
+We will show that for any non-polynomial $\sigma$, $\mathcal{N}(\sigma)$ is dense in $C(\R)$. We employ the following lemma:
+\begin{lemma}
+  \label{poly}
+  Let $\sigma \in C^\infty((a, b))$ where $(a, b) \subset \R$ is an open interval. If for every point $x \in (a, b)$, there exists an integer $k = k(x)$ such that $\sigma^{(k)}$ vanishes at $x$, i.e. $\sigma^{(k)}(x) =0$, then $\sigma$ is a polynomial. 
+\end{lemma}
+By our assumption, we have $\sigma$ is smooth but nonpolynomial; hence, Lemma \autoref{poly} implies that there exists a point $c \in \R$ at whcih $\sigma^{(k)} \not= 0$ for $k = \mathbb{Z}_+ \cup \{0\}$. Then 
+\[ \frac{\sigma((w + h)x + c) - \sigma(wx + c)}{h} \in \mathcal{N}(\sigma), \quad \forall h \not= 0\]
+where $w \in \R$. Taking the limit, we have 
+\[ \frac{d}{dw}\sigma(wx + c) \Big\vert_{w = 0} = x\sigma'(c) \in \overline{\mathcal{N}(\sigma)} \]
+where $\overline{\mathcal{N}(\sigma)}$ is the closure of $\mathcal{N}(\sigma)$. In general, we have
+\[ \frac{d^k}{dw^k} \sigma(wx + c) \Big\vert_{w=0} = x^k \sigma^{(k)}(c) \in \overline{\mathcal{N}(\sigma)}\]
+and since $\sigma^{(k)} \not=0$ for $k \in \mathbb{N}\cup \{0\}$, $\overline{\mathcal{N}(\sigma)}$ is a set of monomials. Then we conclude by Theorem \ref{thm: weierstrass} that $\overline{\mathcal{N}(\sigma)}$ (and hence $\mathcal{N}(\sigma)$) is dense in $C(\R)$.
